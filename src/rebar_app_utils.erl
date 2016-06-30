@@ -56,15 +56,15 @@ is_app_dir(Dir) ->
 		{[], [AppSrcFile]} ->
 			{true, AppSrcFile};
 		{[],[]} ->
-			EbinDir = filename:join([Dir, "ebin"]),
-			App = filename:join([EbinDir, "*.app"]),
+			ConfigDir = filename:join([Dir, "config"]),
+			App = filename:join([ConfigDir, "*.app"]),
 			case filelib:wildcard(App) of
 				[AppFile] ->
 					{true, AppFile};
 				[] ->
 					false;
 				_ ->
-					?ERROR("More than one .app file in ~s~n", [EbinDir]),
+					?ERROR("More than one .app file in ~s~n", [ConfigDir]),
 					false
 			end;
 		{_, _} ->
@@ -86,7 +86,7 @@ app_src_to_app(Filename) ->
                     _ ->
                         filename:basename(Filename, ".app.src")
                 end,
-    filename:join("ebin", Filebase ++ ".app").
+    filename:join("config", Filebase ++ ".app").
 
 app_name(Config, AppFile) ->
     case load_app_file(Config, AppFile) of
